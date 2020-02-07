@@ -5,7 +5,7 @@ extern crate wascc_codec as codec;
 extern crate log;
 
 use codec::capabilities::{CapabilityProvider, Dispatcher, NullDispatcher};
-use codec::core::OP_CONFIGURE;
+use codec::core::{OP_CONFIGURE, OP_REMOVE_ACTOR};
 use wascc_codec::core::CapabilityConfiguration;
 
 use std::error::Error;
@@ -13,7 +13,7 @@ use std::sync::RwLock;
 
 capability_provider!(EchoProvider, EchoProvider::new);
 
-const CAPABILITY_ID: &str = "wok:EchoProvider";
+const CAPABILITY_ID: &str = "wok:echoProvider";
 const OP_ECHO: &str = "EchoRequest";
 
 pub struct EchoProvider {
@@ -81,6 +81,7 @@ impl CapabilityProvider for EchoProvider {
             OP_CONFIGURE if actor == "system" => self.configure(msg.to_vec().as_ref()),
             // We just return a copy of the input
             OP_ECHO => Ok(msg.to_owned()),
+            OP_REMOVE_ACTOR if actor == "system" => Ok(vec![]),
             _ => Err("bad dispatch".into()),
         }
     }
