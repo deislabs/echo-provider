@@ -7,7 +7,7 @@ extern crate log;
 use codec::capabilities::{CapabilityProvider, Dispatcher, NullDispatcher};
 use codec::core::{OP_CONFIGURE, OP_REMOVE_ACTOR};
 use wascc_codec::core::CapabilityConfiguration;
-use wascc_codec::{deserialize};
+use wascc_codec::deserialize;
 
 use std::error::Error;
 use std::sync::RwLock;
