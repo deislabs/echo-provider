@@ -7,6 +7,7 @@ extern crate log;
 use codec::capabilities::{CapabilityProvider, Dispatcher, NullDispatcher};
 use codec::core::{OP_CONFIGURE, OP_REMOVE_ACTOR};
 use wascc_codec::core::CapabilityConfiguration;
+use wascc_codec::deserialize;
 
 use std::error::Error;
 use std::sync::RwLock;
@@ -35,12 +36,8 @@ impl EchoProvider {
         Self::default()
     }
 
-    fn configure(
-        &self,
-        config: impl Into<CapabilityConfiguration>,
-    ) -> Result<Vec<u8>, Box<dyn Error>> {
-        let _config = config.into();
-
+    fn configure(&self, _config: CapabilityConfiguration) -> Result<Vec<u8>, Box<dyn Error>> {
+        // Do nothing here
         Ok(vec![])
     }
 
@@ -78,7 +75,7 @@ impl CapabilityProvider for EchoProvider {
         trace!("Received host call from {}, operation - {}", actor, op);
 
         match op {
-            OP_CONFIGURE if actor == "system" => self.configure(msg.to_vec().as_ref()),
+            OP_CONFIGURE if actor == "system" => self.configure(deserialize(msg)?),
             // We just return a copy of the input
             OP_ECHO => Ok(msg.to_owned()),
             OP_REMOVE_ACTOR if actor == "system" => Ok(vec![]),
