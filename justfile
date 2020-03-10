@@ -1,6 +1,9 @@
 wok_dir := "../../wok"
 
 build:
+    cargo build
+
+build-release:
     cargo build --release
 
 docker-build:
@@ -9,5 +12,5 @@ docker-build:
     docker cp echoactor-build:/usr/echo-provider/target/debug/libecho_provider.so ./target/debug
     docker rm -f echoactor-build
 
-install: build docker-build
-    cp target/debug/libecho_provider.* {{wok_dir}}/lib
+install: build-release docker-build
+    cp target/release/libecho_provider.* {{wok_dir}}/lib
