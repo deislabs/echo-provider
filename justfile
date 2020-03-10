@@ -1,7 +1,7 @@
 wok_dir := "../../wok"
 
 build:
-    cargo build
+    cargo build --release
 
 docker-build:
     docker build -t technosophos/echo-actor:latest .
